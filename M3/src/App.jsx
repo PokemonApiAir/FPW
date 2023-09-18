@@ -1,8 +1,10 @@
 // import EventDemo from "./EventDemo";
-import Contact from "./Contact";
+// import Contact from "./Contact";
+import RUForm from "./RUForm";
+import RUForm2 from "./RUForm2";
 
 function App() {
-  return <Contact></Contact>;
+  return <RUForm2></RUForm2>;
 }
 
 export default App

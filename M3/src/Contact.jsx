@@ -1,19 +1,33 @@
 import { useState } from "react";
 
 export default function Contact() {
-  const [favorite, setFavorite] = useState(false);
-  const [deleted, setDeleted] = useState(false);
+  const [state, setState] = useState("default");
   return (
-    <div style={{ display: deleted ? "none" : "block" }}>
+    <div style={{ display: state !== "deleted" ? "block" : "none" }}>
       Name : Heather
       <br />
       Phone : 08123456789
       <br />
       Action :
-      <button onClick={() => setFavorite(!favorite)}>
-        {favorite ? "💖" : "🖤"}
+      <button
+        onClick={() => 
+          {
+            if(state === "default"){
+              setState("favorited");
+            }else{
+              setState("default");
+            }
+          }
+        }
+      >
+        {state === "favorited" ? "💖" : "🖤"}
       </button>
-      <button style={{ display: favorite ? "none" : "inline" }} onClick={() => setDeleted(true)}>🚮</button>
+      <button
+        style={{ display: state !== "favorited" ? "inline" : "none" }}
+        onClick={() => setState("deleted")}
+      >
+        🚮
+      </button>
     </div>
   );
 }
