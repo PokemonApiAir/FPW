@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import Joi from "joi";
+import { joiResolver } from "@hookform/resolvers/joi";
 
 export default function RUForm() {
   const [contact, setContact] = useState({
@@ -8,13 +10,27 @@ export default function RUForm() {
     gender: false,
     hobbies: [],
   });
-  const { register, handleSubmit } = useForm();
+
+  const schema = Joi.object({
+    name: Joi.string().required(),
+    age: Joi.number().required(),
+    gender: Joi.boolean().required(),
+    hobbies: Joi.array(),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: joiResolver(schema),
+  });
 
   function submitForm(data) {
     setContact({
         name: data.name,
-        age: parseInt(data.age),
-        gender: data.gender === "true",
+        age: data.age,
+        gender: data.gender,
         hobbies: data.hobbies,
     });
   }
@@ -61,7 +77,7 @@ export default function RUForm() {
               <td>
                 <input {...register("name")}/>
                 <br />
-                <span></span>
+                <span>{errors.name?.message}</span>
               </td>
             </tr>
             <tr>
@@ -70,16 +86,17 @@ export default function RUForm() {
               <td>
                 <input {...register("age")}/>
                 <br />
-                <span></span>
+                <span>{errors.age?.message}</span>
               </td>
             </tr>
             <tr>
               <td>Gender</td>
               <td>:</td>
               <td>
-                <input type="radio" {...register("gender")} value="true" />
-                male <input type="radio" {...register("gender")} value="false" />
-                female
+                <input type="radio" {...register("gender")} value="true" /> male
+                <input type="radio" {...register("gender")} value="false" /> female
+                <br />
+                <span>{errors.gender?.message}</span>
               </td>
             </tr>
             <tr>
